@@ -11,23 +11,47 @@ st.set_page_config(page_title="Vision Inspector", page_icon="🔎", layout="wide
 
 st.markdown("""
 <style>
-.block-container {max-width: 1180px; padding-top: 2rem;}
-.hero {padding: 1.3rem 1.6rem; border-radius: 18px; background: linear-gradient(120deg,#0f766e,#155e75); color: white; margin-bottom: 1.2rem;}
-.hero h1 {margin: 0; font-size: 2.2rem;}.hero p {margin: .35rem 0 0; opacity: .9;}
+.stApp {background: #f6f8fb;}
+.block-container {max-width: 1220px; padding: 2.2rem 2.2rem 4rem;}
+[data-testid="stSidebar"] {background: #0b1324;}
+[data-testid="stSidebar"] * {color: #e2e8f0 !important;}
+[data-testid="stSidebar"] hr {border-color: #25324a;}
+.hero {padding: 1.65rem 1.9rem; border-radius: 22px; background: linear-gradient(120deg,#0b1324 0%,#123b56 52%,#0f766e 100%); color: white; margin-bottom: 1.5rem; box-shadow: 0 16px 38px rgba(15,23,42,.14);}
+.hero h1 {margin: 0; font-size: 2.45rem; letter-spacing: -.04em;}.hero p {margin: .5rem 0 0; color: #c8d8e8; font-size: 1.02rem;}
+.eyebrow {font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #8fe3d2; margin-bottom: .55rem;}
+.section-label {font-size: .78rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #0f766e; margin: 1.1rem 0 .55rem;}
+.module-card {background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1rem 1.1rem; height: 100%; box-shadow: 0 5px 16px rgba(15,23,42,.05);}
+.module-card h4 {margin: 0 0 .35rem; color: #0f172a;}.module-card p {margin: 0; color: #64748b; font-size: .88rem; line-height: 1.45;}
+.metric-strip {background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: .45rem .7rem; box-shadow: 0 5px 16px rgba(15,23,42,.04);}
+.stTabs [data-baseweb="tab-list"] {gap: .45rem; background: white; padding: .4rem; border: 1px solid #e2e8f0; border-radius: 14px;}
+.stTabs [data-baseweb="tab"] {height: 2.7rem; border-radius: 10px; padding: 0 1rem;}
+.stTabs [aria-selected="true"] {background: #dff7f1; color: #0f766e;}
+.stButton button, .stDownloadButton button {border-radius: 10px; font-weight: 650;}
 </style>
 """, unsafe_allow_html=True)
-st.markdown('<div class="hero"><h1>🔎 Vision Inspector</h1><p>Transparent, local-first computer-vision triage for image datasets.</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="hero"><div class="eyebrow">Computer Vision Lab · VITyarthi Project</div><h1>🔎 Vision Inspector</h1><p>Turn one image into a clear, explainable inspection report.</p></div>', unsafe_allow_html=True)
 
 with st.sidebar:
-    st.header("Inspection workflow")
-    st.write("1. Upload an image\n2. Review quality warnings\n3. Explore color and structure metrics\n4. Export the report as JSON")
-    st.caption("All processing happens locally. No image is sent to an external service.")
+    st.markdown("## 🔎 Vision Inspector")
+    st.caption("LOCAL-FIRST IMAGE AUDIT")
+    st.divider()
+    st.markdown("### Inspection workflow")
+    st.markdown("**01**  Upload an image  \n**02**  Review quality warnings  \n**03**  Explore color and structure  \n**04**  Export the JSON report")
+    st.divider()
+    st.markdown("### Analysis modules")
+    st.markdown("Quality · Color · Structure")
+    st.caption("Privacy note: all processing happens locally. No image is sent to an external service.")
 
 uploaded = st.file_uploader("Upload a PNG or JPEG image", type=["png", "jpg", "jpeg"])
 if not uploaded:
+    st.markdown('<div class="section-label">Start here</div>', unsafe_allow_html=True)
     st.info("Upload an image to begin the inspection.")
-    st.markdown("#### What this tool measures")
-    st.write("Image quality · dominant colors · edges and contours · connected regions")
+    st.markdown('<div class="section-label">What this tool measures</div>', unsafe_allow_html=True)
+    modules = st.columns(3)
+    cards = [("01 · Quality", "Brightness, contrast, blur score, and actionable warnings."), ("02 · Color", "Colorfulness, mean RGB, and dominant palette."), ("03 · Structure", "Edges, contours, and connected visual regions.")]
+    for column, (title, body) in zip(modules, cards):
+        with column:
+            st.markdown(f'<div class="module-card"><h4>{title}</h4><p>{body}</p></div>', unsafe_allow_html=True)
     st.stop()
 
 try:
@@ -40,10 +64,12 @@ except (OSError, ValueError) as exc:
     st.error(f"Inspection failed: {exc}")
     st.stop()
 
-left, right = st.columns([1.15, 1])
+st.markdown('<div class="section-label">Inspection overview</div>', unsafe_allow_html=True)
+left, right = st.columns([1.08, 1])
 with left:
     st.image(uploaded, caption=f"Input image: {uploaded.name}", use_container_width=True)
 with right:
+    st.markdown('<div class="metric-strip">', unsafe_allow_html=True)
     st.subheader("Inspection summary")
     a, b, c = st.columns(3)
     a.metric("Quality", f"{report.quality.quality_score}/100")
@@ -54,7 +80,9 @@ with right:
     else:
         st.success("No quality warnings detected.")
     st.download_button("Download JSON report", report.to_json(), f"{Path(uploaded.name).stem}_inspection.json", "application/json")
+    st.markdown('</div>', unsafe_allow_html=True)
 
+st.markdown('<div class="section-label">Detailed analysis</div>', unsafe_allow_html=True)
 quality_tab, color_tab, structure_tab = st.tabs(["1 · Quality analysis", "2 · Color analysis", "3 · Structure analysis"])
 with quality_tab:
     st.subheader("Quality analysis")
