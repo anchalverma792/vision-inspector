@@ -20,6 +20,7 @@ st.markdown("""
 .hero h1 {margin: 0; font-size: 2.45rem; letter-spacing: -.04em;}.hero p {margin: .5rem 0 0; color: #c8d8e8; font-size: 1.02rem;}
 .eyebrow {font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #8fe3d2; margin-bottom: .55rem;}
 .section-label {font-size: .78rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #0f766e; margin: 1.1rem 0 .55rem;}
+.detail-label {font-size: .86rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #7c3aed; margin: 1.35rem 0 .7rem;}
 .module-card {background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1rem 1.1rem; height: 100%; box-shadow: 0 5px 16px rgba(15,23,42,.05);}
 .module-card h4 {margin: 0 0 .35rem; color: #0f172a;}.module-card p {margin: 0; color: #64748b; font-size: .88rem; line-height: 1.45;}
 .metric-strip {background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: .45rem .7rem; box-shadow: 0 5px 16px rgba(15,23,42,.04);}
@@ -83,7 +84,7 @@ with right:
     st.download_button("Download JSON report", report.to_json(), f"{Path(uploaded.name).stem}_inspection.json", "application/json")
     st.markdown('</div>', unsafe_allow_html=True)
 
-st.markdown('<div class="section-label">Detailed analysis</div>', unsafe_allow_html=True)
+st.markdown('<div class="detail-label">Detailed analysis</div>', unsafe_allow_html=True)
 quality_tab, color_tab, structure_tab = st.tabs(["1 · Quality analysis", "2 · Color analysis", "3 · Structure analysis"])
 with quality_tab:
     st.subheader("Quality analysis")
