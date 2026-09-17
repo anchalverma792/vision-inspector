@@ -27,6 +27,11 @@ st.markdown("""
 .stTabs [data-baseweb="tab-list"] {gap: .45rem; background: white; padding: .4rem; border: 1px solid #e2e8f0; border-radius: 14px;}
 .stTabs [data-baseweb="tab"] {height: 2.7rem; border-radius: 10px; padding: 0 1rem;}
 .stTabs [aria-selected="true"] {background: #dff7f1; color: #0f766e;}
+.stTabs [data-baseweb="tab-list"] button:nth-child(1) {color: #0f766e;}
+.stTabs [data-baseweb="tab-list"] button:nth-child(2) {color: #7c3aed;}
+.stTabs [data-baseweb="tab-list"] button:nth-child(3) {color: #c2410c;}
+.quality-title, .color-title, .structure-title {font-size: 1.65rem; font-weight: 750; letter-spacing: -.02em; margin: .2rem 0 .35rem;}
+.quality-title {color: #0f766e;}.color-title {color: #7c3aed;}.structure-title {color: #c2410c;}
 .stButton button, .stDownloadButton button {border-radius: 10px; font-weight: 650;}
 </style>
 """, unsafe_allow_html=True)
@@ -87,12 +92,12 @@ with right:
 st.markdown('<div class="detail-label">Detailed analysis</div>', unsafe_allow_html=True)
 quality_tab, color_tab, structure_tab = st.tabs(["1 · Quality analysis", "2 · Color analysis", "3 · Structure analysis"])
 with quality_tab:
-    st.subheader("Quality analysis")
+    st.markdown('<div class="quality-title">Quality analysis</div>', unsafe_allow_html=True)
     st.caption("Grayscale statistics and Laplacian variance create an explainable first-pass quality score.")
     st.dataframe({"Metric": ["Brightness", "Contrast", "Blur score", "Quality score"], "Value": [report.quality.brightness, report.quality.contrast, report.quality.blur_score, report.quality.quality_score]}, hide_index=True, use_container_width=True)
     st.progress(int(report.quality.quality_score), text="Heuristic quality score")
 with color_tab:
-    st.subheader("Color analysis")
+    st.markdown('<div class="color-title">Color analysis</div>', unsafe_allow_html=True)
     st.caption("HSV saturation estimates colorfulness; deterministic k-means summarizes the dominant RGB palette.")
     st.metric("Colorfulness", f"{report.colors.colorfulness}%")
     st.write(f"Mean RGB: {report.colors.mean_rgb}")
@@ -100,6 +105,6 @@ with color_tab:
     st.image(cv2.cvtColor(palette, cv2.COLOR_RGB2BGR), caption="Dominant colors, ordered by frequency", use_container_width=True)
     st.write({"Dominant RGB colors": report.colors.dominant_colors})
 with structure_tab:
-    st.subheader("Structure analysis")
+    st.markdown('<div class="structure-title">Structure analysis</div>', unsafe_allow_html=True)
     st.caption("Canny edges, external contours, Otsu thresholding, and connected components describe visual structure.")
     st.dataframe({"Metric": ["Edge density", "External contours", "Largest contour ratio", "Connected components"], "Value": [f"{report.structure.edge_density}%", report.structure.contour_count, report.structure.largest_contour_ratio, report.structure.connected_components]}, hide_index=True, use_container_width=True)
