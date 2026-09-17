@@ -1,0 +1,19 @@
+```mermaid
+flowchart TD
+  A([Start]) --> B[Select PNG/JPEG or local path]
+  B --> C{Readable image?}
+  C -- No --> E[Show actionable error]
+  C -- Yes --> D[Load BGR image]
+  D --> Q[Compute quality metrics]
+  D --> C2[Compute color palette]
+  D --> S[Compute structure metrics]
+  Q --> M[Merge typed results]
+  C2 --> M
+  S --> M
+  M --> V[Review warnings and metrics]
+  V --> X{Need machine-readable output?}
+  X -- Yes --> J[Download / print JSON]
+  X -- No --> Z([Finish])
+  J --> Z
+  E --> Z
+```

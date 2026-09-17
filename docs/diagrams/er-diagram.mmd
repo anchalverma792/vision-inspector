@@ -1,0 +1,10 @@
+```mermaid
+erDiagram
+  INSPECTION_REPORT ||--|| QUALITY_RESULT : contains
+  INSPECTION_REPORT ||--|| COLOR_RESULT : contains
+  INSPECTION_REPORT ||--|| STRUCTURE_RESULT : contains
+  INSPECTION_REPORT { string filename int width int height int channels }
+  QUALITY_RESULT { float brightness float contrast float blur_score float quality_score }
+  COLOR_RESULT { float colorfulness string mean_rgb string dominant_colors }
+  STRUCTURE_RESULT { float edge_density int contour_count float largest_contour_ratio int connected_components }
+```

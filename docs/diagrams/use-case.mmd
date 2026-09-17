@@ -1,0 +1,13 @@
+```mermaid
+flowchart LR
+  Curator[Dataset curator] --> UC1((Upload image))
+  Curator --> UC2((Review quality warnings))
+  Curator --> UC3((Explore colors and structure))
+  Developer[Developer] --> UC4((Run CLI analysis))
+  Developer --> UC5((Export JSON report))
+  UC1 --> System[Vision Inspector]
+  UC2 --> System
+  UC3 --> System
+  UC4 --> System
+  UC5 --> System
+```

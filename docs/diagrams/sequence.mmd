@@ -1,0 +1,16 @@
+```mermaid
+sequenceDiagram
+  actor User
+  participant UI as Streamlit / CLI
+  participant P as Pipeline
+  participant CV as CV Modules
+  participant R as Report
+  User->>UI: Provide image
+  UI->>P: analyze_image(path)
+  P->>P: Validate and decode image
+  P->>CV: Run quality, color, structure analysis
+  CV-->>P: Typed module results
+  P->>R: Assemble InspectionReport
+  R-->>UI: Report object
+  UI-->>User: Metrics, warnings, palette, JSON
+```

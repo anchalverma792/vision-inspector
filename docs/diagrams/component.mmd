@@ -1,0 +1,16 @@
+```mermaid
+classDiagram
+  class App { +upload_image() +display_report() +download_json() }
+  class CLI { +main() }
+  class Pipeline { +analyze_image(path) InspectionReport }
+  class Quality { +analyze_quality(image) QualityResult }
+  class Colors { +analyze_colors(image) ColorResult }
+  class Structure { +analyze_structure(image) StructureResult }
+  class InspectionReport { +to_dict() +to_json() }
+  App --> Pipeline
+  CLI --> Pipeline
+  Pipeline --> Quality
+  Pipeline --> Colors
+  Pipeline --> Structure
+  Pipeline --> InspectionReport
+```

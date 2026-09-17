@@ -1,0 +1,15 @@
+```mermaid
+flowchart LR
+  U[Student / Dataset Curator] --> UI[Streamlit Dashboard]
+  U --> CLI[Command-line Interface]
+  UI --> P[Analysis Pipeline]
+  CLI --> P
+  P --> V[Image Loader & Validator]
+  V --> Q[Quality Module]
+  V --> C[Color Module]
+  V --> S[Structure Module]
+  Q --> R[Typed InspectionReport]
+  C --> R
+  S --> R
+  R --> O[Dashboard Cards / JSON Export]
+```
