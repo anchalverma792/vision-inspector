@@ -59,7 +59,8 @@ try:
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as handle:
         handle.write(uploaded.getbuffer())
         image_path = handle.name
-    report = analyze_image(image_path)
+    with st.spinner("Running quality, color, and structure analysis..."):
+        report = analyze_image(image_path)
 except (OSError, ValueError) as exc:
     st.error(f"Inspection failed: {exc}")
     st.stop()

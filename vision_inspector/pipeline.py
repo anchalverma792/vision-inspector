@@ -13,6 +13,8 @@ def analyze_image(path: str | Path) -> InspectionReport:
     source = Path(path)
     if not source.exists() or not source.is_file():
         raise ValueError(f"Could not read a supported image: {source}")
+    if source.stat().st_size > 25 * 1024 * 1024:
+        raise ValueError("Image is too large. Please upload an image smaller than 25 MB.")
     image = cv2.imread(str(source), cv2.IMREAD_COLOR)
     if image is None:
         raise ValueError(f"Could not read a supported image: {source}")

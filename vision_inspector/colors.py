@@ -8,6 +8,8 @@ def analyze_colors(image: np.ndarray, clusters: int = 5) -> ColorResult:
     """Estimate a compact RGB palette using deterministic k-means."""
     small = cv2.resize(image, (80, 80), interpolation=cv2.INTER_AREA)
     pixels = np.float32(small.reshape(-1, 3))
+    unique_pixels = np.unique(pixels, axis=0)
+    clusters = max(1, min(clusters, len(unique_pixels)))
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.5)
     _, labels, centers = cv2.kmeans(pixels, clusters, None, criteria, 3, cv2.KMEANS_PP_CENTERS)
     counts = np.bincount(labels.ravel(), minlength=clusters)

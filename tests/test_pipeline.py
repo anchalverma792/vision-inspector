@@ -37,3 +37,19 @@ def test_json_contract_contains_all_modules(tmp_path):
 def test_missing_path_has_actionable_error(tmp_path):
     with pytest.raises(ValueError, match="supported image"):
         analyze_image(tmp_path / "missing.png")
+
+
+def test_tiny_image_is_supported(tmp_path):
+    path = tmp_path / "tiny.png"
+    assert cv2.imwrite(str(path), np.zeros((1, 1, 3), dtype=np.uint8))
+    report = analyze_image(path)
+    assert report.width == 1
+    assert len(report.colors.dominant_colors) == 1
+
+
+def test_oversized_file_is_rejected(tmp_path):
+    path = tmp_path / "large.png"
+    with path.open("wb") as handle:
+        handle.truncate(25 * 1024 * 1024 + 1)
+    with pytest.raises(ValueError, match="smaller than 25 MB"):
+        analyze_image(path)
